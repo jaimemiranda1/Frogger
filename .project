@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>res/Sheets/Tree.png</name>
+			<type>1</type>
+			<location>C:/Users/jaime.miranda1/Pictures/Tree.png</location>
+		</link>
+	</linkedResources>
 </projectDescription>

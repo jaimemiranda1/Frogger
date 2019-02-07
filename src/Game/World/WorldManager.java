@@ -58,7 +58,7 @@ public class WorldManager {
 
         StaticEntitiesAvailables.add(new LillyPad(handler, 0, 0));
         StaticEntitiesAvailables.add(new Log(handler, 0, 0));
-        StaticEntitiesAvailables.add(new Tree(handler));
+        StaticEntitiesAvailables.add(new Tree(handler, 0, 0));
         StaticEntitiesAvailables.add(new Turtle(handler, 0, 0));
 
         SpawnedAreas = new ArrayList<>();
@@ -214,6 +214,7 @@ public class WorldManager {
     	
     	if(randomArea instanceof GrassArea) {
     		randomArea = new GrassArea(handler, yPosition);
+    		SpawnHazard1(yPosition);
     	}
     	else if(randomArea instanceof WaterArea) {
     		randomArea = new WaterArea(handler, yPosition);
@@ -226,7 +227,21 @@ public class WorldManager {
     }
 
 	/*
-	 * Given a yPositionm this method will add a new hazard to the SpawnedHazards ArrayList
+	 * Given a yPosition this method will add a tree to the SpawnedHazards ArrayList
+	 */
+	private void SpawnHazard1(int yPosition) {
+		Random rand = new Random();
+		int randInt;
+		int choice = rand.nextInt(7);
+		
+		if (choice >=2) {
+			randInt = 64 * rand.nextInt(9);
+			SpawnedHazards.add(new Tree(handler, randInt, yPosition));
+		}
+		
+	}
+	/*
+	 * Given a yPosition this method will add a log or lillypad to the SpawnedHazards ArrayList
 	 */
 	private void SpawnHazard(int yPosition) {
 		Random rand = new Random();
