@@ -19,7 +19,7 @@ public class WaterArea extends BaseArea {
 
     @Override
     public void tick() {
-        anim.tick();	// Animation frame movement.
+        anim.tick();	// Animation frame movement
 
     }
 
