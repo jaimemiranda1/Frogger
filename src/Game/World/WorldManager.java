@@ -233,11 +233,16 @@ public class WorldManager {
 		Random rand = new Random();
 		int randInt;
 		int choice = rand.nextInt(7);
+		int randNum = rand.nextInt(5);
 		
-		if (choice >=2) {
-			randInt = 64 * rand.nextInt(9);
-			SpawnedHazards.add(new Tree(handler, randInt, yPosition));
+		for (int i=0; i<=randNum;i++) {
+			if (choice >=2) {
+				randInt = 64 * rand.nextInt(9);
+				SpawnedHazards.add(new Tree(handler, randInt, yPosition));
+			}
 		}
+		
+		
 		
 	}
 	/*
