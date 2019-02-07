@@ -233,10 +233,10 @@ public class WorldManager {
 		Random rand = new Random();
 		int randInt;
 		int choice = rand.nextInt(7);
-		int randNum = rand.nextInt(5);
+		int randNum = rand.nextInt(4);
 		
-		for (int i=0; i<=randNum;i++) {
-			if (choice >=2) {
+		for (int i = 0; i <= randNum; i++) {
+			if (choice >= 2) {
 				randInt = 64 * rand.nextInt(9);
 				SpawnedHazards.add(new Tree(handler, randInt, yPosition));
 			}
@@ -252,14 +252,18 @@ public class WorldManager {
 		Random rand = new Random();
 		int randInt;
 		int choice = rand.nextInt(7);
+		int randNum = rand.nextInt(4);
 		// Chooses between Log or Lillypad
-		if (choice <=2) {
+		if (choice <= 2) {
 			randInt = 64 * rand.nextInt(4);
 			SpawnedHazards.add(new Log(handler, randInt, yPosition));
 		}
-		else if (choice >=5){
-			randInt = 64 * rand.nextInt(9);
-			SpawnedHazards.add(new LillyPad(handler, randInt, yPosition));
+		
+		else if (choice >= 5){
+			for (int i = 0; i <= randNum; i++) {
+				randInt = 64 * rand.nextInt(9);
+				SpawnedHazards.add(new LillyPad(handler, randInt, yPosition));
+			}
 		}
 		else {
 			randInt = 64 * rand.nextInt(3);
