@@ -124,7 +124,7 @@ public class Images {
 
             lilly = playerSheet.crop(6,170,61,55);
             log = playerSheet.crop(387,259,184,57);
-            tree = treeSheet.crop(0,0,40,67);
+            tree = treeSheet.crop(0,0,32,54);
             
             object[0] = ImageIO.read(getClass().getResourceAsStream("/Sheets/Objects/object1.png"));
             object[1] = ImageIO.read(getClass().getResourceAsStream("/Sheets/Objects/object2.png"));
