@@ -259,7 +259,7 @@ public class WorldManager {
 			randInt = 64 * rand.nextInt(4);
 			SpawnedHazards.add(new Log(handler, randInt, yPosition));
 		}
-
+		
 		else if (choice >= 5){
 			if(lastChoice >= 5) {
 				int num = rand.nextInt(1);
