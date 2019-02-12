@@ -210,7 +210,7 @@ public class Player extends EntityBase {
         }
     }
 
-    @SuppressWarnings("SuspiciousNameCombination")
+    //@SuppressWarnings("SuspiciousNameCombination")
     private static BufferedImage rotateClockwise90(BufferedImage src) {
         int width = src.getWidth();
         int height = src.getHeight();

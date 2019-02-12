@@ -76,8 +76,22 @@ public class WorldManager {
 		 * 	Spawn Areas in Map (2 extra areas spawned off screen)
 		 *  To understand this, go down to randomArea(int yPosition) 
 		 */
+		
 		for(int i=0; i<gridHeight+2; i++) {
-			SpawnedAreas.add(randomArea((-2+i)*64));
+			Random rand = new Random();
+			int randNum = rand.nextInt(2);
+			if (i==10) {
+				if (randNum == 1) {
+					SpawnedAreas.add(new GrassArea(handler,(-2+i)*64));
+				}
+				else {
+					SpawnedAreas.add(new EmptyArea(handler,(-2+i)*64));
+				}
+				
+			}
+			else {
+				SpawnedAreas.add(randomArea((-2+i)*64));
+			}
 		}
 
 		player.setX((gridWidth/2)*64);
@@ -215,7 +229,7 @@ public class WorldManager {
 
 		if(randomArea instanceof GrassArea) {
 			randomArea = new GrassArea(handler, yPosition);
-			SpawnHazard1(yPosition);
+			SpawnTree(yPosition);
 		}
 		else if(randomArea instanceof WaterArea) {
 			randomArea = new WaterArea(handler, yPosition);
@@ -230,7 +244,7 @@ public class WorldManager {
 	/*
 	 * Given a yPosition this method will add a tree to the SpawnedHazards ArrayList
 	 */
-	private void SpawnHazard1(int yPosition) {
+	private void SpawnTree(int yPosition) {
 		Random rand = new Random();
 		int randInt;
 		int choice = rand.nextInt(7);
@@ -262,7 +276,7 @@ public class WorldManager {
 		
 		else if (choice >= 5){
 			if(lastChoice >= 5) {
-				int num = rand.nextInt(1);
+				int num = rand.nextInt(2);
 				randInt = 64 * rand.nextInt(4);
 				if(num == 0) {
 					SpawnedHazards.add(new Log(handler, randInt, yPosition));
