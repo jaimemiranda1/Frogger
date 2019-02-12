@@ -228,5 +228,22 @@ public class Player extends EntityBase {
     public Rectangle getPlayerCollision() {
         return player;
     }
+    
+    public String direction() {
+    	String dir = "";
+    	if (facing.equals("UP")) {
+    		dir = "UP";
+    	}
+    	else if (facing.equals("DOWN")){
+    		dir = "DOWN";
+    	}
+    	else if (facing.equals("LEFT")){
+    		dir = "LEFT";
+    	}
+    	else if (facing.equals("RIGHT")){
+    		dir = "RIGHT";
+    	}
+    	return dir;
+    }
 
 }

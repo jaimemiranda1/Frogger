@@ -21,7 +21,8 @@ import java.util.Random;
  * We move the screen, the player, and some hazards. 
  * 				How? Figure it out.
  */
-public class WorldManager {
+public class WorldManager{
+	
 
 	private ArrayList<BaseArea> AreasAvailables;			// Lake, empty and grass area (NOTE: The empty tile is just the "sand" tile. Ik, weird name.)
 	private ArrayList<StaticBase> StaticEntitiesAvailables;	// Has the hazards: LillyPad, Log, Tree, and Turtle.
@@ -173,7 +174,8 @@ public class WorldManager {
 	}
 
 	private void HazardMovement() {
-
+		int x = player.getX();
+		int y = player.getY();
 		for (int i = 0; i < SpawnedHazards.size(); i++) {
 
 			// Moves hazard down
@@ -191,6 +193,25 @@ public class WorldManager {
 					player.setX(player.getX() + 1);
 				}
 
+			}
+			
+			if (SpawnedHazards.get(i) instanceof Tree) {
+				if (SpawnedHazards.get(i).GetCollision() != null
+						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) 
+					if (player.direction().equals("LEFT")) {					
+						player.setX(x+16);
+						
+					}
+					else if(player.direction().equals("RIGHT")) {
+						player.setX(x-16);
+					}
+					else if(player.direction().equals("DOWN")) {
+						player.setY(y-16);
+					}
+					else if(player.direction().equals("UP")) {
+						player.setY(y+16);
+					}
+				
 			}
 
 			// if hazard has passed the screen height, then remove this hazard.
