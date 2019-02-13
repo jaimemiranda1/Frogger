@@ -46,7 +46,8 @@ public class WorldManager{
 	private int gridWidth,gridHeight;						// Size of the grid. 
 	private int movementSpeed;								// Movement of the tiles going downwards.
 	private int lastChoice; 
-
+	private int lillyX;										// Random x pos for the lillys.
+	private int treeX;										// Random x pos for trees.
 
 	public WorldManager(Handler handler) {
 		this.handler = handler;
@@ -274,12 +275,20 @@ public class WorldManager{
 		for (int i = 0; i <= randNum; i++) {
 			if (choice >= 2) {
 				randInt = 64 * rand.nextInt(9);
+				if(treeX == randInt) {
+					while(treeX == randInt) {
+						randInt = 64 * rand.nextInt(9);
+					}
+					SpawnedHazards.add(new Tree(handler, randInt, yPosition));
+				}
+				else {
 				SpawnedHazards.add(new Tree(handler, randInt, yPosition));
 			}
+				treeX = randInt;
 		}
 
 
-
+		}
 	}
 	/*
 	 * Given a yPosition this method will add a log or lillypad to the SpawnedHazards ArrayList
@@ -308,8 +317,17 @@ public class WorldManager{
 			}
 			else {
 				for (int i = 0; i <= randNum; i++) {
-					randInt = 64 * rand.nextInt(9);
-					SpawnedHazards.add(new LillyPad(handler, randInt, yPosition));
+					randInt = 64 * rand.nextInt(9);							
+					if (lillyX == randInt) {							
+						while (lillyX == randInt) {
+								randInt = 64 * rand.nextInt(9);
+						}
+						SpawnedHazards.add(new LillyPad(handler, randInt, yPosition));
+					}
+					else {
+						SpawnedHazards.add(new LillyPad(handler, randInt, yPosition));
+					}
+					lillyX = randInt;
 				}
 			} 
 		}
