@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 public class Player extends EntityBase {
     private Handler handler;
 
-
+    private Boolean moveUp, moveLeft, moveRight;
     private Rectangle player;
     private String facing = "UP";
     private Boolean moving = false;
@@ -37,7 +37,8 @@ public class Player extends EntityBase {
         }
 
         if(!moving){
-            move();
+            limits();
+        	move();
         }
 
     }
@@ -61,7 +62,7 @@ public class Player extends EntityBase {
         index=0;
 
         /////////////////MOVE UP///////////////
-        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && facing.equals("UP")){
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && facing.equals("UP") && moveUp){
             moving=true;
         }else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && !facing.equals("UP")){
             if(facing.equals("DOWN")) {
@@ -85,7 +86,7 @@ public class Player extends EntityBase {
         }
 
         /////////////////MOVE LEFT///////////////
-        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_A) && !moving && facing.equals("LEFT")){
+        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_A) && !moving && facing.equals("LEFT") && moveLeft){
             moving=true;
         }else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_A) && !moving&& !facing.equals("LEFT")){
             if(facing.equals("RIGHT")) {
@@ -107,7 +108,7 @@ public class Player extends EntityBase {
         }
 
         /////////////////MOVE RIGHT///////////////
-        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_D) && !moving && facing.equals("RIGHT")){
+        else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_D) && !moving && facing.equals("RIGHT") && moveRight){
             moving=true;
         }else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_D) && !moving&& !facing.equals("RIGHT")){
             if(facing.equals("LEFT")) {
@@ -245,5 +246,23 @@ public class Player extends EntityBase {
     	}
     	return dir;
     }
-
+    private boolean limits() {
+    	moveUp = true;
+    	moveLeft = true;
+    	moveRight = true;
+    	
+    	if (this.player.getX() >= 8*64) {
+    		moveRight = false;
+    	}
+    	
+        if(this.player.getX() <= 0) {
+    		moveLeft = false;
+    	}
+        
+        if (this.player.getY() <= 0.75*64) {
+    		moveUp = false;
+    	}
+    	
+        return true;
+    }
 }
