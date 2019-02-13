@@ -265,4 +265,14 @@ public class Player extends EntityBase {
     	
         return true;
     }
-}
+        public boolean hazardBounds() {
+        	if ((this.facing.equals("RIGHT") && this.getX() >= 9*64) 
+        			|| (this.facing.equals("LEFT") && this.getX() >= 8*64)
+        			|| (this.facing.equals("UP") && this.getX() >= 8*64)
+        			|| (this.facing.equals("DOWN") && this.getX() >= 8*64)) {
+        		return false;
+        	}
+        	return true;
+        }
+    }
+

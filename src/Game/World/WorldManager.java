@@ -190,7 +190,8 @@ public class WorldManager{
 				// If the player Rectangle intersects with the Log or Turtle Rectangle, then
 				// move player to the right.
 				if (SpawnedHazards.get(i).GetCollision() != null
-						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
+						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())
+						&& player.hazardBounds()) {
 					player.setX(player.getX() + 1);
 				}
 
