@@ -264,6 +264,9 @@ public class Player extends EntityBase {
 			if (this.getX() > 9*64) {
 				this.setX(9*64);
 			}
+			if (this.getX() < 0) {
+				this.setX(0);
+			}
 		}
 	}       			
 

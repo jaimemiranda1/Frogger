@@ -298,7 +298,7 @@ public class WorldManager{
 		Random rand = new Random();
 		int randInt;
 		int choice = rand.nextInt(7);
-		int randNum = rand.nextInt(4);
+		int randNum = rand.nextInt(5);
 		// Chooses between Log or Lillypad
 		if (choice <= 2) {
 			randInt = 64 * rand.nextInt(4);
