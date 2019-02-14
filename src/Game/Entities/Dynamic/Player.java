@@ -16,7 +16,7 @@ public class Player extends EntityBase {
 
     private Boolean moveUp, moveLeft, moveRight;
     private Rectangle player;
-    private String facing = "UP";
+    public String facing = "UP";
     private Boolean moving = false;
     private int moveCoolDown=0;
 
@@ -230,46 +230,30 @@ public class Player extends EntityBase {
         return player;
     }
     
-    public String direction() {
-    	String dir = "";
-    	if (facing.equals("UP")) {
-    		dir = "UP";
-    	}
-    	else if (facing.equals("DOWN")){
-    		dir = "DOWN";
-    	}
-    	else if (facing.equals("LEFT")){
-    		dir = "LEFT";
-    	}
-    	else if (facing.equals("RIGHT")){
-    		dir = "RIGHT";
-    	}
-    	return dir;
-    }
     private boolean limits() {
     	moveUp = true;
     	moveLeft = true;
     	moveRight = true;
     	
-    	if (this.player.getX() >= 8*64) {
+    	if (player.getX() >= 8*64) {
     		moveRight = false;
     	}
     	
-        if(this.player.getX() <= 0) {
+        if(player.getX() <= 0) {
     		moveLeft = false;
     	}
         
-        if (this.player.getY() <= 0.75*64) {
+        if (player.getY() <= 0.75*64) {
     		moveUp = false;
     	}
     	
         return true;
     }
         public boolean hazardBounds() {
-        	if ((this.facing.equals("RIGHT") && this.getX() >= 9*64) 
-        			|| (this.facing.equals("LEFT") && this.getX() >= 8*64)
-        			|| (this.facing.equals("UP") && this.getX() >= 8*64)
-        			|| (this.facing.equals("DOWN") && this.getX() >= 8*64)) {
+        	if ((facing.equals("RIGHT") && this.getX() >= 9*64) 
+        			|| (facing.equals("LEFT") && this.getX() >= 8*64)
+        			|| (facing.equals("UP") && this.getX() >= 8*64)
+        			|| (facing.equals("DOWN") && this.getX() >= 8*64)) {
         		return false;
         	}
         	return true;

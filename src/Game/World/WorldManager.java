@@ -200,17 +200,17 @@ public class WorldManager{
 			if (SpawnedHazards.get(i) instanceof Tree) {
 				if (SpawnedHazards.get(i).GetCollision() != null
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) 
-					if (player.direction().equals("LEFT")) {					
+					if (player.facing.equals("LEFT")) {					
 						player.setX(x+16);
 						
 					}
-					else if(player.direction().equals("RIGHT")) {
+					else if(player.facing.equals("RIGHT")) {
 						player.setX(x-16);
 					}
-					else if(player.direction().equals("DOWN")) {
+					else if(player.facing.equals("DOWN")) {
 						player.setY(y-16);
 					}
-					else if(player.direction().equals("UP")) {
+					else if(player.facing.equals("UP")) {
 						player.setY(y+16);
 					}
 				
