@@ -38,6 +38,7 @@ public class Player extends EntityBase {
 
         if(!moving){
             limits();
+            hazardJump();
         	move();
         }
 
@@ -250,13 +251,19 @@ public class Player extends EntityBase {
         return true;
     }
         public boolean hazardBounds() {
-        	if ((facing.equals("RIGHT") && this.getX() >= 9*64) 
+        	if (facing.equals("RIGHT") && this.getX() >= 9*64
         			|| (facing.equals("LEFT") && this.getX() >= 8*64)
         			|| (facing.equals("UP") && this.getX() >= 8*64)
-        			|| (facing.equals("DOWN") && this.getX() >= 8*64)) {
-        		return false;
+        			|| (facing.equals("DOWN") && this.getX() >= 8*64))  {        		
+        		return false;	
         	}
-        	return true;
+        	return true;		
         }
-    }
+        	
+		private void hazardJump() {
+			if (this.getX() > 9*64) {
+				this.setX(9*64);
+			}
+		}
+	}       			
 
