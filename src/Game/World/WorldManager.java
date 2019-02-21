@@ -187,6 +187,10 @@ public class WorldManager{
 			// Moves Log or Turtle to the right
 			if (SpawnedHazards.get(i) instanceof Log || SpawnedHazards.get(i) instanceof Turtle) {
 				SpawnedHazards.get(i).setX(SpawnedHazards.get(i).getX() + 1);
+				
+			if(SpawnedHazards.get(i).getX() > 568) {
+				SpawnedHazards.get(i).setX(-192);
+			}
 
 				// Verifies the hazards Rectangles aren't null and
 				// If the player Rectangle intersects with the Log or Turtle Rectangle, then
