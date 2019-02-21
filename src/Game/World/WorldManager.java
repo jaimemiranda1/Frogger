@@ -22,7 +22,7 @@ import java.util.Random;
  * 				How? Figure it out.
  */
 public class WorldManager{
-	
+
 
 	private ArrayList<BaseArea> AreasAvailables;			// Lake, empty and grass area (NOTE: The empty tile is just the "sand" tile. Ik, weird name.)
 	private ArrayList<StaticBase> StaticEntitiesAvailables;	// Has the hazards: LillyPad, Log, Tree, and Turtle.
@@ -48,6 +48,8 @@ public class WorldManager{
 	private int lastChoice; 
 	private int lillyX;										// Random x pos for the lillys.
 	private int treeX;										// Random x pos for trees.
+	private int logXMin = 0;									// Random x pos for logs.
+	private int logXMax = 0;
 
 	public WorldManager(Handler handler) {
 		this.handler = handler;
@@ -78,7 +80,7 @@ public class WorldManager{
 		 * 	Spawn Areas in Map (2 extra areas spawned off screen)
 		 *  To understand this, go down to randomArea(int yPosition) 
 		 */
-		
+
 		for(int i=0; i<gridHeight+2; i++) {
 			Random rand = new Random();
 			int randNum = rand.nextInt(2);
@@ -89,7 +91,7 @@ public class WorldManager{
 				else {
 					SpawnedAreas.add(new EmptyArea(handler,(-2+i)*64));
 				}
-				
+
 			}
 			else {
 				SpawnedAreas.add(randomArea((-2+i)*64));
@@ -196,13 +198,13 @@ public class WorldManager{
 				}
 
 			}
-			
+
 			if (SpawnedHazards.get(i) instanceof Tree) {
 				if (SpawnedHazards.get(i).GetCollision() != null
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) 
 					if (player.facing.equals("LEFT")) {					
 						player.setX(x+16);
-						
+
 					}
 					else if(player.facing.equals("RIGHT")) {
 						player.setX(x-16);
@@ -213,7 +215,7 @@ public class WorldManager{
 					else if(player.facing.equals("UP")) {
 						player.setY(y+16);
 					}
-				
+
 			}
 
 			// if hazard has passed the screen height, then remove this hazard.
@@ -283,10 +285,10 @@ public class WorldManager{
 					SpawnedHazards.add(new Tree(handler, randInt, yPosition));
 				}
 				else {
-				SpawnedHazards.add(new Tree(handler, randInt, yPosition));
-			}
+					SpawnedHazards.add(new Tree(handler, randInt, yPosition));
+				}
 				treeX = randInt;
-		}
+			}
 
 
 		}
@@ -300,11 +302,44 @@ public class WorldManager{
 		int choice = rand.nextInt(7);
 		int randNum = rand.nextInt(5);
 		// Chooses between Log or Lillypad
+
 		if (choice <= 2) {
-			randInt = 64 * rand.nextInt(4);
-			SpawnedHazards.add(new Log(handler, randInt, yPosition));
+			int hop = 0;
+			randNum = rand.nextInt(5);
+			while (hop==0) {
+				if (randNum == 1 || randNum ==0) {
+					randInt = 64 * 3;
+					SpawnedHazards.add(new Log(handler, randInt, yPosition));
+					break;
+				}
+				else if (randNum == 2) {
+					for (int j=0; j<4; j+=3 ) {
+						randInt = 64 * j;
+						SpawnedHazards.add(new Log(handler, randInt, yPosition));
+					}
+					break;
+				}
+				else if (randNum == 3) {
+					for (int j=-3; j<4; j+=3 ) {
+						randInt = 64 * j;
+						SpawnedHazards.add(new Log(handler, randInt, yPosition));
+					}
+					break;
+				}
+				else if (randNum ==4) {
+					for (int j=-6; j<4; j+=3 ) {
+						randInt = 64 * j;
+						SpawnedHazards.add(new Log(handler, randInt, yPosition));
+					}
+					break;
+				}
+
+				break;
+			}
+
+
 		}
-		
+
 		else if (choice >= 5){
 			if(lastChoice >= 5) {
 				int num = rand.nextInt(2);
@@ -321,7 +356,7 @@ public class WorldManager{
 					randInt = 64 * rand.nextInt(9);							
 					if (lillyX == randInt) {							
 						while (lillyX == randInt) {
-								randInt = 64 * rand.nextInt(9);
+							randInt = 64 * rand.nextInt(9);
 						}
 						SpawnedHazards.add(new LillyPad(handler, randInt, yPosition));
 					}
@@ -340,3 +375,4 @@ public class WorldManager{
 	}
 
 }
+
