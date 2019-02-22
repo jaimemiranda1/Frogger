@@ -184,13 +184,27 @@ public class WorldManager{
 			// Moves hazard down
 			SpawnedHazards.get(i).setY(SpawnedHazards.get(i).getY() + movementSpeed);
 
-			// Moves Log or Turtle to the right
-			if (SpawnedHazards.get(i) instanceof Log || SpawnedHazards.get(i) instanceof Turtle) {
-				SpawnedHazards.get(i).setX(SpawnedHazards.get(i).getX() + 1);
-				
-			if(SpawnedHazards.get(i).getX() > 568) {
-				SpawnedHazards.get(i).setX(-192);
+			//Moves turtle to the left
+			if(SpawnedHazards.get(i) instanceof Turtle) {
+				SpawnedHazards.get(i).setX(SpawnedHazards.get(i).getX() - 1);
+
+				if(SpawnedHazards.get(i).getX() < -64) {
+					SpawnedHazards.get(i).setX(768);
+				}
+				if (SpawnedHazards.get(i).GetCollision() != null
+						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())
+						&& player.hazardBounds()) {
+					player.setX(player.getX() - 1);
+				}
 			}
+
+			// Moves Log or to the right
+			if (SpawnedHazards.get(i) instanceof Log) {
+				SpawnedHazards.get(i).setX(SpawnedHazards.get(i).getX() + 1);
+
+				if(SpawnedHazards.get(i).getX() > 568) {
+					SpawnedHazards.get(i).setX(-192);
+				}
 
 				// Verifies the hazards Rectangles aren't null and
 				// If the player Rectangle intersects with the Log or Turtle Rectangle, then
@@ -372,7 +386,7 @@ public class WorldManager{
 			} 
 		}
 		else {
-			randInt = 64 * rand.nextInt(3);
+			randInt = 64 * 9;
 			SpawnedHazards.add(new Turtle(handler, randInt, yPosition));
 		}
 		lastChoice = choice;
