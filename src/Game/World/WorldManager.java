@@ -322,40 +322,29 @@ public class WorldManager{
 		// Chooses between Log or Lillypad
 
 		if (choice <= 2) {
-			int hop = 0;
 			randNum = rand.nextInt(5);
-			while (hop==0) {
-				if (randNum == 1 || randNum ==0) {
-					randInt = 64 * 3;
-					SpawnedHazards.add(new Log(handler, randInt, yPosition));
-					break;
-				}
-				else if (randNum == 2) {
-					for (int j=0; j<4; j+=3 ) {
-						randInt = 64 * j;
-						SpawnedHazards.add(new Log(handler, randInt, yPosition));
-					}
-					break;
-				}
-				else if (randNum == 3) {
-					for (int j=-3; j<4; j+=3 ) {
-						randInt = 64 * j;
-						SpawnedHazards.add(new Log(handler, randInt, yPosition));
-					}
-					break;
-				}
-				else if (randNum ==4) {
-					for (int j=-6; j<4; j+=3 ) {
-						randInt = 64 * j;
-						SpawnedHazards.add(new Log(handler, randInt, yPosition));
-					}
-					break;
-				}
-
-				break;
+			if (randNum == 1 || randNum ==0) {
+				randInt = 64 * 3;
+				SpawnedHazards.add(new Log(handler, randInt, yPosition));
 			}
-
-
+			else if (randNum == 2) {
+				for (int j=0; j<4; j+=3 ) {
+					randInt = 64 * j;
+					SpawnedHazards.add(new Log(handler, randInt, yPosition));
+				}
+			}
+			else if (randNum == 3) {
+				for (int j=-3; j<4; j+=3 ) {
+					randInt = 64 * j;
+					SpawnedHazards.add(new Log(handler, randInt, yPosition));
+				}
+			}
+			else if (randNum ==4) {
+				for (int j=-6; j<4; j+=3 ) {
+					randInt = 64 * j;
+					SpawnedHazards.add(new Log(handler, randInt, yPosition));
+				}
+			}
 		}
 
 		else if (choice >= 5){
