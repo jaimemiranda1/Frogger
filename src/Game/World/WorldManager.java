@@ -1,8 +1,10 @@
 package Game.World;
 
 import Game.Entities.Dynamic.Player;
+import Game.Entities.Static.Cactus;
 import Game.Entities.Static.LillyPad;
 import Game.Entities.Static.Log;
+import Game.Entities.Static.Rock;
 import Game.Entities.Static.StaticBase;
 import Game.Entities.Static.Tree;
 import Game.Entities.Static.Turtle;
@@ -48,8 +50,8 @@ public class WorldManager{
 	private int lastChoice; 
 	private int lillyX;										// Random x pos for the lillys.
 	private int treeX;										// Random x pos for trees.
-	private int logXMin = 0;									// Random x pos for logs.
-	private int logXMax = 0;
+	private int rockX;										// Random x pos for rocks.
+	private int cactusX;									// Random x pos for cactus.
 
 	public WorldManager(Handler handler) {
 		this.handler = handler;
@@ -64,6 +66,7 @@ public class WorldManager{
 		StaticEntitiesAvailables.add(new LillyPad(handler, 0, 0));
 		StaticEntitiesAvailables.add(new Log(handler, 0, 0));
 		StaticEntitiesAvailables.add(new Tree(handler, 0, 0));
+		StaticEntitiesAvailables.add(new Rock(handler, 0, 0));
 		StaticEntitiesAvailables.add(new Turtle(handler, 0, 0));
 
 		SpawnedAreas = new ArrayList<>();
@@ -236,6 +239,44 @@ public class WorldManager{
 
 			}
 
+			if (SpawnedHazards.get(i) instanceof Rock) {
+				if (SpawnedHazards.get(i).GetCollision() != null
+						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) 
+					if (player.facing.equals("LEFT")) {					
+						player.setX(x+16);
+
+					}
+					else if(player.facing.equals("RIGHT")) {
+						player.setX(x-16);
+					}
+					else if(player.facing.equals("DOWN")) {
+						player.setY(y-16);
+					}
+					else if(player.facing.equals("UP")) {
+						player.setY(y+16);
+					}
+
+			}
+			
+			if (SpawnedHazards.get(i) instanceof Cactus) {
+				if (SpawnedHazards.get(i).GetCollision() != null
+						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) 
+					if (player.facing.equals("LEFT")) {					
+						player.setX(x+16);
+
+					}
+					else if(player.facing.equals("RIGHT")) {
+						player.setX(x-16);
+					}
+					else if(player.facing.equals("DOWN")) {
+						player.setY(y-16);
+					}
+					else if(player.facing.equals("UP")) {
+						player.setY(y+16);
+					}
+
+			}
+
 			// if hazard has passed the screen height, then remove this hazard.
 			if (SpawnedHazards.get(i).getY() > handler.getHeight()) {
 				SpawnedHazards.remove(i);
@@ -280,8 +321,53 @@ public class WorldManager{
 		}
 		else {
 			randomArea = new EmptyArea(handler, yPosition);
+			SpawnCactusRock(yPosition);
 		}
 		return randomArea;
+	}
+
+	private void SpawnCactusRock(int yPosition) {
+		Random rand = new Random();
+		int randInt;
+		int choice = rand.nextInt(7);
+		int randNum = rand.nextInt(3);
+
+		if(randNum == 0) {
+			for (int i = 0; i <= randNum; i++) {
+				if (choice >= 2) {
+					randInt = 64 * rand.nextInt(9);
+					if(rockX == randInt) {
+						while(rockX == randInt) {
+							randInt = 64 * rand.nextInt(9);
+						}
+						SpawnedHazards.add(new Rock(handler, randInt, yPosition));
+					}
+					else {
+						SpawnedHazards.add(new Rock(handler, randInt, yPosition));
+					}
+					rockX = randInt;
+				}
+
+			}
+		}
+		else {
+			for (int i = 0; i <= randNum; i++) {
+				if (choice >= 2) {
+					randInt = 64 * rand.nextInt(9);
+					if(cactusX == randInt) {
+						while(cactusX == randInt) {
+							randInt = 64 * rand.nextInt(9);
+						}
+						SpawnedHazards.add(new Cactus(handler, randInt, yPosition));
+					}
+					else {
+						SpawnedHazards.add(new Cactus(handler, randInt, yPosition));
+					}
+					cactusX = randInt;
+				}
+
+			}
+		}
 	}
 
 	/*
