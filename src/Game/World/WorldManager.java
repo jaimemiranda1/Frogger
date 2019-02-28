@@ -192,7 +192,7 @@ public class WorldManager{
 				SpawnedHazards.get(i).setX(SpawnedHazards.get(i).getX() - 1);
 
 				if(SpawnedHazards.get(i).getX() < -64) {
-					SpawnedHazards.get(i).setX(768);
+					SpawnedHazards.get(i).setX(640);
 				}
 				if (SpawnedHazards.get(i).GetCollision() != null
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())
@@ -257,7 +257,7 @@ public class WorldManager{
 					}
 
 			}
-			
+
 			if (SpawnedHazards.get(i) instanceof Cactus) {
 				if (SpawnedHazards.get(i).GetCollision() != null
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) 
@@ -461,8 +461,17 @@ public class WorldManager{
 			} 
 		}
 		else {
-			randInt = 64 * 9;
-			SpawnedHazards.add(new Turtle(handler, randInt, yPosition));
+			int rndm = rand.nextInt(2);
+			if (rndm == 0) {
+				randInt = 64 * 9;
+				SpawnedHazards.add(new Turtle(handler, randInt, yPosition));
+			}	
+			else {
+				for(int i=9; i<14; i+=4) {
+					randInt = 64 * i;
+					SpawnedHazards.add(new Turtle(handler, randInt, yPosition));
+				}
+			}
 		}
 		lastChoice = choice;
 	}
