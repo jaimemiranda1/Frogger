@@ -32,6 +32,12 @@ public class GameState extends State {
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)) {
         	State.setState(handler.getGame().pauseState);
         }
+        //if(WorldManager.rem == 0 || WorldManager.below == 1){
+          
+           // State.setState(handler.getGame().gameOverState);
+          
+        //}
+
 
     }
 

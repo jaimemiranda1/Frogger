@@ -52,6 +52,8 @@ public class WorldManager{
 	private int treeX;										// Random x pos for trees.
 	private int rockX;										// Random x pos for rocks.
 	private int cactusX;									// Random x pos for cactus.
+	public static int rem=0;
+	public static int below;
 
 	public WorldManager(Handler handler) {
 		this.handler = handler;
@@ -178,7 +180,8 @@ public class WorldManager{
 		object2.tick();
 
 	}
-
+	
+	
 	private void HazardMovement() {
 		int x = player.getX();
 		int y = player.getY();
@@ -198,6 +201,7 @@ public class WorldManager{
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())
 						&& player.hazardBounds()) {
 					player.setX(player.getX() - 1);
+					rem = 1;
 				}
 			}
 
@@ -216,6 +220,7 @@ public class WorldManager{
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())
 						&& player.hazardBounds()) {
 					player.setX(player.getX() + 1);
+					rem=1;
 				}
 
 			}
@@ -474,6 +479,12 @@ public class WorldManager{
 			}
 		}
 		lastChoice = choice;
+	}
+	public void frogBelow() {
+		if (player.getY() > handler.getHeight()) {
+			below = 1;
+		}
+		
 	}
 
 }

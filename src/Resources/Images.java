@@ -37,6 +37,7 @@ public class Images {
     public static BufferedImage[] Turtle;
     public static SpriteSheet WaterSheet;
     public static BufferedImage[] Water;
+    public static SpriteSheet gameOverSheet;
 
 
     public static BufferedImage player;
@@ -72,6 +73,7 @@ public class Images {
             treeSheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/tree.png")));
             rockSheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/Rock.png")));
             cactusSheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/cactus.png")));
+            gameOverSheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/gameOver.png")));
 
             title = ImageIO.read(getClass().getResourceAsStream("/Sheets/Frogger2.png"));
             Pause = ImageIO.read(getClass().getResourceAsStream("/Buttons/Pause.png"));
@@ -134,6 +136,7 @@ public class Images {
             tree = treeSheet.crop(0,0,32,54);
             Rock = rockSheet.crop(0, 0, 873, 777);
             cactus = cactusSheet.crop(0, 0, 473, 637);
+            gameOver = gameOverSheet.crop(0, 0, 1370, 768);
             
             object[0] = ImageIO.read(getClass().getResourceAsStream("/Sheets/Objects/object1.png"));
             object[1] = ImageIO.read(getClass().getResourceAsStream("/Sheets/Objects/object2.png"));
