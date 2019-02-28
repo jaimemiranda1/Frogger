@@ -8,6 +8,7 @@ import Game.Entities.Static.Rock;
 import Game.Entities.Static.StaticBase;
 import Game.Entities.Static.Tree;
 import Game.Entities.Static.Turtle;
+import Game.GameStates.State;
 import Main.Handler;
 import UI.UIManager;
 
@@ -52,7 +53,7 @@ public class WorldManager{
 	private int treeX;										// Random x pos for trees.
 	private int rockX;										// Random x pos for rocks.
 	private int cactusX;									// Random x pos for cactus.
-	public static int rem=0;
+	public static int rem;
 	public static int below;
 
 	public WorldManager(Handler handler) {
@@ -201,7 +202,7 @@ public class WorldManager{
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())
 						&& player.hazardBounds()) {
 					player.setX(player.getX() - 1);
-					rem = 1;
+					rem = 0;
 				}
 			}
 
@@ -220,7 +221,7 @@ public class WorldManager{
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())
 						&& player.hazardBounds()) {
 					player.setX(player.getX() + 1);
-					rem=1;
+					rem=0;
 				}
 
 			}
@@ -323,6 +324,9 @@ public class WorldManager{
 		else if(randomArea instanceof WaterArea) {
 			randomArea = new WaterArea(handler, yPosition);
 			SpawnHazard(yPosition);
+			if (player.getY() + 64 == yPosition) {
+				State.setState(handler.getGame().gameOverState);
+			}
 		}
 		else {
 			randomArea = new EmptyArea(handler, yPosition);
@@ -481,8 +485,8 @@ public class WorldManager{
 		lastChoice = choice;
 	}
 	public void frogBelow() {
-		if (player.getY() > handler.getHeight()) {
-			below = 1;
+		if (player.getY() >= handler.getHeight()) {
+			State.setState(handler.getGame().gameOverState);
 		}
 		
 	}
