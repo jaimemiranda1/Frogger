@@ -52,6 +52,7 @@ public class Images {
     public static BufferedImage gameOver;
     public static BufferedImage cactus;
     public static BufferedImage Rock;
+    public static BufferedImage[] Retry;
 
     public static BufferedImage[] object;
 
