@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 public class Images {
 
-
+	public static BufferedImage[] retry;
     public static BufferedImage[] butstart;
     public static BufferedImage title;
     public static BufferedImage Pause;
@@ -52,13 +52,13 @@ public class Images {
     public static BufferedImage gameOver;
     public static BufferedImage cactus;
     public static BufferedImage Rock;
-    public static BufferedImage[] Retry;
+    
 
     public static BufferedImage[] object;
 
 
     public Images() {
-
+    	retry = new BufferedImage[2];
         butstart = new BufferedImage[3];
         Resume = new BufferedImage[2];
         BTitle = new BufferedImage[2];
@@ -87,6 +87,8 @@ public class Images {
             butstart[0]= ImageIO.read(getClass().getResourceAsStream("/Buttons/StartButton.png"));//normbut
             butstart[1]= ImageIO.read(getClass().getResourceAsStream("/Buttons/Startbutton2.png"));//hoverbut
             butstart[2]= ImageIO.read(getClass().getResourceAsStream("/Buttons/StartButton3.png"));//clickbut
+            retry[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/Retry.png"));
+            retry[1] = ImageIO.read(getClass().getResourceAsStream("/Buttons/Retry1.png"));
             
             Player[0]= playerSheet.crop(0,30,52,39);
             Player[1]= playerSheet.crop(53,25,59,46);

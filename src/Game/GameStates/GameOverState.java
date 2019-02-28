@@ -28,8 +28,9 @@ public class GameOverState extends State {
         /*
          * Adds a button that by being pressed changes the State
          */
-        uiManager.addObjects(new UIImageButton(33, handler.getGame().getHeight() - 150, 128, 64, Images.Resume, () -> {
+        uiManager.addObjects(new UIImageButton(33, handler.getGame().getHeight() - 150, 128, 64, Images.retry, () -> {
             handler.getMouseManager().setUimanager(null);
+            handler.getGame().reStart();
             State.setState(handler.getGame().gameState);
         }));
 
