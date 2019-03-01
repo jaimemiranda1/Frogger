@@ -1,6 +1,8 @@
 package Game.Entities.Dynamic;
 
 import Game.Entities.EntityBase;
+import Game.GameStates.State;
+import Game.World.WorldManager;
 import Main.Handler;
 import Resources.Images;
 
@@ -19,6 +21,9 @@ public class Player extends EntityBase {
 	public String facing = "UP";
 	private Boolean moving = false;
 	private int moveCoolDown=0;
+	private int counter=0;
+	private int frogCounter=0;
+	public static int lastScore=0;
 
 	private int index =0;
 
@@ -34,12 +39,24 @@ public class Player extends EntityBase {
 
 		if(moving) {
 			animateMovement();
+			if((facing.equals("UP") || facing.equals("DOWN")) && WorldManager.inWater() && !WorldManager.inHazard()) {
+				State.setState(handler.getGame().gameOverState);
+			}
+			if((facing.equals("RIGHT") || facing.equals("LEFT")) && WorldManager.inWater()){
+				State.setState(handler.getGame().gameOverState);
+			}
 		}
 
 		if(!moving){
 			limits();
 			hazardJump();
 			move();
+			if((facing.equals("UP") || facing.equals("DOWN")) && WorldManager.inWater() && !WorldManager.inHazard()) {
+				State.setState(handler.getGame().gameOverState);
+			}
+			if((facing.equals("RIGHT") || facing.equals("LEFT")) && WorldManager.inWater()){
+				State.setState(handler.getGame().gameOverState);
+			}
 		}
 
 	}
@@ -65,6 +82,9 @@ public class Player extends EntityBase {
 		/////////////////MOVE UP///////////////
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && facing.equals("UP") && moveUp){
 			moving=true;
+			score();
+			WorldManager.blocking=0;
+			WorldManager.cactusHit=0;
 		}else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && !facing.equals("UP")){
 			if(facing.equals("DOWN")) {
 				if(this.getX() % 64 >= 64 / 2 ) {
@@ -100,6 +120,7 @@ public class Player extends EntityBase {
 		/////////////////MOVE DOWN///////////////
 		else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_S) && !moving && facing.equals("DOWN")){
 			moving=true;
+			score();
 		}else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_S) && !moving && !facing.equals("DOWN")){
 			reGrid();
 			if(facing.equals("RIGHT")){
@@ -193,6 +214,7 @@ public class Player extends EntityBase {
 
 
 		UpdatePlayerRectangle(g);
+		paintComponent(g,10,45);
 
 	}
 
@@ -268,6 +290,29 @@ public class Player extends EntityBase {
 		if (this.getX() < 0) {
 			this.setX(0);
 		}
+	}
+	public void score() {
+		if (WorldManager.cactusHit == 1 && moving) {
+			counter-=6;
+			frogCounter-=6;
+		}
+		if (facing.equals("UP") && moving && WorldManager.blocking == 0 && counter == frogCounter  ) {
+			counter+=1;
+			frogCounter+=1;
+		}
+		else if (facing.equals("UP") && moving && counter > frogCounter  ) {
+			
+			frogCounter+=1;
+		}
+		else if (facing.equals("DOWN") && moving && WorldManager.blocking ==0 ) {		
+			frogCounter-=1;
+		}
+		lastScore = counter;
+	}
+	public static void paintComponent(Graphics g, int x, int y) {
+		g.setFont(new Font("Calibri", Font.BOLD, 44));
+		g.setColor(Color.CYAN);
+		g.drawString("SCORE: " + lastScore, x, y);
 	}
 }       			
 

@@ -1,6 +1,7 @@
 package Main;
 
 import Display.DisplayScreen;
+import Game.Entities.Dynamic.Player;
 import Game.GameStates.GameOverState;
 import Game.GameStates.GameState;
 import Game.GameStates.MenuState;
@@ -91,6 +92,7 @@ public class GameSetUp implements Runnable {
     }
 
     public void reStart(){
+    	Player.lastScore = 0;
         gameState = new GameState(handler);
     }
 

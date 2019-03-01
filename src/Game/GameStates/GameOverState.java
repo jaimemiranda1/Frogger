@@ -7,7 +7,7 @@ import UI.UIManager;
 
 import java.awt.*;
 
-
+import Game.Entities.Dynamic.Player;
 import Game.World.WorldManager;
 
 
@@ -60,7 +60,8 @@ public class GameOverState extends State {
     @Override
     public void render(Graphics g) {
         g.drawImage(Images.gameOver,0,0,handler.getGame().getWidth(),handler.getGame().getHeight(),null);
-        uiManager.Render(g);
+        uiManager.Render(g);    
+        Player.paintComponent(g, 200, 128);
 
     }
 }

@@ -30,8 +30,8 @@ public class WorldManager{
 	private ArrayList<BaseArea> AreasAvailables;			// Lake, empty and grass area (NOTE: The empty tile is just the "sand" tile. Ik, weird name.)
 	private ArrayList<StaticBase> StaticEntitiesAvailables;	// Has the hazards: LillyPad, Log, Tree, and Turtle.
 
-	private ArrayList<BaseArea> SpawnedAreas;				// Areas currently on world
-	private ArrayList<StaticBase> SpawnedHazards;			// Hazards currently on world.
+	private static ArrayList<BaseArea> SpawnedAreas;				// Areas currently on world
+	private static ArrayList<StaticBase> SpawnedHazards;			// Hazards currently on world.
 
 	Long time;
 	Boolean reset = true;
@@ -39,7 +39,7 @@ public class WorldManager{
 	Handler handler;
 
 
-	private Player player;									// How do we find the frog coordinates? How do we find the Collisions? This bad boy.
+	private static Player player;									// How do we find the frog coordinates? How do we find the Collisions? This bad boy.
 
 	UIManager object = new UIManager(handler);
 	UI.UIManager.Vector object2 = object.new Vector();
@@ -53,8 +53,9 @@ public class WorldManager{
 	private int treeX;										// Random x pos for trees.
 	private int rockX;										// Random x pos for rocks.
 	private int cactusX;									// Random x pos for cactus.
-	public static int rem;
-	public static int below;
+	public static int blocking = 0;
+	public static int cactusHit=0;
+	
 
 	public WorldManager(Handler handler) {
 		this.handler = handler;
@@ -202,7 +203,7 @@ public class WorldManager{
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())
 						&& player.hazardBounds()) {
 					player.setX(player.getX() - 1);
-					rem = 0;
+					
 				}
 			}
 
@@ -221,14 +222,18 @@ public class WorldManager{
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())
 						&& player.hazardBounds()) {
 					player.setX(player.getX() + 1);
-					rem=0;
+					
 				}
 
 			}
 
 			if (SpawnedHazards.get(i) instanceof Tree) {
+				
 				if (SpawnedHazards.get(i).GetCollision() != null
-						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) 
+						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
+					blocking = 1;
+					
+				
 					if (player.facing.equals("LEFT")) {					
 						player.setX(x+16);
 
@@ -242,12 +247,13 @@ public class WorldManager{
 					else if(player.facing.equals("UP")) {
 						player.setY(y+16);
 					}
-
+				}
 			}
 
 			if (SpawnedHazards.get(i) instanceof Rock) {
 				if (SpawnedHazards.get(i).GetCollision() != null
-						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) 
+						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
+					blocking = 1;
 					if (player.facing.equals("LEFT")) {					
 						player.setX(x+16);
 
@@ -261,12 +267,13 @@ public class WorldManager{
 					else if(player.facing.equals("UP")) {
 						player.setY(y+16);
 					}
-
+				}
 			}
 
 			if (SpawnedHazards.get(i) instanceof Cactus) {
 				if (SpawnedHazards.get(i).GetCollision() != null
-						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) 
+						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
+					cactusHit = 1;
 					if (player.facing.equals("LEFT")) {					
 						player.setX(x+16);
 
@@ -280,7 +287,7 @@ public class WorldManager{
 					else if(player.facing.equals("UP")) {
 						player.setY(y+16);
 					}
-
+				}
 			}
 
 			// if hazard has passed the screen height, then remove this hazard.
@@ -335,15 +342,15 @@ public class WorldManager{
 		return randomArea;
 	}
 
-	private void SpawnCactusRock(int yPosition) {
+	private void SpawnCactusRock(int yPosition) {		//Beware of cactuses... you've been WARNED!!!!
 		Random rand = new Random();
 		int randInt;
-		int choice = rand.nextInt(7);
-		int randNum = rand.nextInt(3);
+		int choice = rand.nextInt(6);
+		int randNum = rand.nextInt(2);
 
 		if(randNum == 0) {
 			for (int i = 0; i <= randNum; i++) {
-				if (choice >= 2) {
+				if (choice > 2) {
 					randInt = 64 * rand.nextInt(9);
 					if(rockX == randInt) {
 						while(rockX == randInt) {
@@ -361,7 +368,7 @@ public class WorldManager{
 		}
 		else {
 			for (int i = 0; i <= randNum; i++) {
-				if (choice >= 2) {
+				if (choice <= 2) {
 					randInt = 64 * rand.nextInt(9);
 					if(cactusX == randInt) {
 						while(cactusX == randInt) {
@@ -471,12 +478,14 @@ public class WorldManager{
 		}
 		else {
 			int rndm = rand.nextInt(2);
-			if (rndm == 0) {
-				randInt = 64 * 9;
-				SpawnedHazards.add(new Turtle(handler, randInt, yPosition));
-			}	
-			else {
+			 if (rndm == 0 ) {
 				for(int i=9; i<14; i+=4) {
+					randInt = 64 * i;
+					SpawnedHazards.add(new Turtle(handler, randInt, yPosition));
+				}
+			}
+			else {
+				for(int i=9; i<18; i+=4) {
 					randInt = 64 * i;
 					SpawnedHazards.add(new Turtle(handler, randInt, yPosition));
 				}
@@ -490,6 +499,47 @@ public class WorldManager{
 		}
 		
 	}
-
-}
-
+	public static boolean  inWater()
+	{
+		for(int i = 0; i < SpawnedAreas.size(); i++)
+		{
+			if(SpawnedAreas.get(i).getYPosition() < player.getY() - 32 && SpawnedAreas.get(i).getYPosition() +64 > player.getY()  - 32 
+					&& player.facing.equals("UP") )
+			{
+				if(SpawnedAreas.get(i) instanceof WaterArea)
+				{
+					return true;
+				}	
+			}
+			if(SpawnedAreas.get(i).getYPosition() < player.getY() + 32 && SpawnedAreas.get(i).getYPosition() +64 > player.getY() + 32 
+					&& player.facing.equals("DOWN") )
+			{
+				if(SpawnedAreas.get(i) instanceof WaterArea)
+				{
+					return true;
+				}	
+			}
+			if( SpawnedAreas.get(i).getYPosition() < player.getY() + 32 && SpawnedAreas.get(i).getYPosition() +64 > player.getY() + 32  
+					&&   (player.facing.equals("RIGHT")|| player.facing.equals("LEFT")) )
+			{
+				if(SpawnedAreas.get(i) instanceof WaterArea && !inHazard())
+				{
+					return true;
+				}	
+			}
+		}
+		
+		return false;
+	}
+	
+	public static boolean inHazard()
+		{
+			for (int i = 0; i < SpawnedHazards.size(); i++) {
+				if (SpawnedHazards.get(i).GetCollision() != null&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
+					return true;
+				}
+					
+			}
+			return false;
+		}
+}	
