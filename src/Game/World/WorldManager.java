@@ -1,6 +1,7 @@
 package Game.World;
 
 import Game.Entities.Dynamic.Player;
+import Game.Entities.Static.Bug;
 import Game.Entities.Static.Cactus;
 import Game.Entities.Static.LillyPad;
 import Game.Entities.Static.Log;
@@ -28,7 +29,7 @@ public class WorldManager{
 
 
 	private ArrayList<BaseArea> AreasAvailables;			// Lake, empty and grass area (NOTE: The empty tile is just the "sand" tile. Ik, weird name.)
-	private ArrayList<StaticBase> StaticEntitiesAvailables;	// Has the hazards: LillyPad, Log, Tree, and Turtle.
+	private ArrayList<StaticBase> StaticEntitiesAvailables;	// Has the hazards: LillyPad, Log, Tree, Rock, Cactus, Bug and Turtle.
 
 	private static ArrayList<BaseArea> SpawnedAreas;				// Areas currently on world
 	private static ArrayList<StaticBase> SpawnedHazards;			// Hazards currently on world.
@@ -53,9 +54,11 @@ public class WorldManager{
 	private int treeX;										// Random x pos for trees.
 	private int rockX;										// Random x pos for rocks.
 	private int cactusX;									// Random x pos for cactus.
+	private int bugX;										// Random x pos for bug.
 	public static int blocking = 0;
 	public static int cactusHit=0;
-	
+	public static int bugHit=0;
+
 
 	public WorldManager(Handler handler) {
 		this.handler = handler;
@@ -72,6 +75,7 @@ public class WorldManager{
 		StaticEntitiesAvailables.add(new Tree(handler, 0, 0));
 		StaticEntitiesAvailables.add(new Rock(handler, 0, 0));
 		StaticEntitiesAvailables.add(new Turtle(handler, 0, 0));
+		StaticEntitiesAvailables.add(new Bug(handler, 0, 0));
 
 		SpawnedAreas = new ArrayList<>();
 		SpawnedHazards = new ArrayList<>();
@@ -182,8 +186,8 @@ public class WorldManager{
 		object2.tick();
 
 	}
-	
-	
+
+
 	private void HazardMovement() {
 		int x = player.getX();
 		int y = player.getY();
@@ -203,7 +207,7 @@ public class WorldManager{
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())
 						&& player.hazardBounds()) {
 					player.setX(player.getX() - 1);
-					
+
 				}
 			}
 
@@ -222,18 +226,18 @@ public class WorldManager{
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())
 						&& player.hazardBounds()) {
 					player.setX(player.getX() + 1);
-					
+
 				}
 
 			}
 
 			if (SpawnedHazards.get(i) instanceof Tree) {
-				
+
 				if (SpawnedHazards.get(i).GetCollision() != null
 						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
 					blocking = 1;
-					
-				
+
+
 					if (player.facing.equals("LEFT")) {					
 						player.setX(x+16);
 
@@ -290,9 +294,17 @@ public class WorldManager{
 				}
 			}
 
-			// if hazard has passed the screen height, then remove this hazard.
-			if (SpawnedHazards.get(i).getY() > handler.getHeight()) {
-				SpawnedHazards.remove(i);
+			if (SpawnedHazards.get(i) instanceof Bug) {
+				if (SpawnedHazards.get(i).GetCollision() != null
+						&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
+					bugHit = 1;
+					SpawnedHazards.remove(i);
+				}
+
+				// if hazard has passed the screen height, then remove this hazard.
+				if (SpawnedHazards.get(i).getY() > handler.getHeight()) {
+					SpawnedHazards.remove(i);
+				}
 			}
 		}
 	}
@@ -346,9 +358,9 @@ public class WorldManager{
 		Random rand = new Random();
 		int randInt;
 		int choice = rand.nextInt(6);
-		int randNum = rand.nextInt(2);
+		int randNum = rand.nextInt(6);
 
-		if(randNum == 0) {
+		if(randNum <= 1) {
 			for (int i = 0; i <= randNum; i++) {
 				if (choice > 2) {
 					randInt = 64 * rand.nextInt(9);
@@ -366,7 +378,7 @@ public class WorldManager{
 
 			}
 		}
-		else {
+		else if(randNum <= 3){
 			for (int i = 0; i <= randNum; i++) {
 				if (choice <= 2) {
 					randInt = 64 * rand.nextInt(9);
@@ -380,6 +392,24 @@ public class WorldManager{
 						SpawnedHazards.add(new Cactus(handler, randInt, yPosition));
 					}
 					cactusX = randInt;
+				}
+
+			}
+		}
+		else {
+			for (int i = 0; i <= 3; i++) {
+				if (choice <= 2) {
+					randInt = 64 * rand.nextInt(9);
+					if(bugX == randInt) {
+						while(bugX == randInt) {
+							randInt = 64 * rand.nextInt(9);
+						}
+						SpawnedHazards.add(new Bug(handler, randInt, yPosition));
+					}
+					else {
+						SpawnedHazards.add(new Bug(handler, randInt, yPosition));
+					}
+					bugX = randInt;
 				}
 
 			}
@@ -478,7 +508,7 @@ public class WorldManager{
 		}
 		else {
 			int rndm = rand.nextInt(2);
-			 if (rndm == 0 ) {
+			if (rndm == 0 ) {
 				for(int i=9; i<14; i+=4) {
 					randInt = 64 * i;
 					SpawnedHazards.add(new Turtle(handler, randInt, yPosition));
@@ -497,7 +527,7 @@ public class WorldManager{
 		if (player.getY() >= handler.getHeight()) {
 			State.setState(handler.getGame().gameOverState);
 		}
-		
+
 	}
 	public static boolean  inWater()
 	{
@@ -528,18 +558,18 @@ public class WorldManager{
 				}	
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public static boolean inHazard()
-		{
-			for (int i = 0; i < SpawnedHazards.size(); i++) {
-				if (SpawnedHazards.get(i).GetCollision() != null&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
-					return true;
-				}
-					
+	{
+		for (int i = 0; i < SpawnedHazards.size(); i++) {
+			if (SpawnedHazards.get(i).GetCollision() != null&& player.getPlayerCollision().intersects(SpawnedHazards.get(i).GetCollision())) {
+				return true;
 			}
-			return false;
+
 		}
+		return false;
+	}
 }	

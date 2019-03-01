@@ -85,6 +85,7 @@ public class Player extends EntityBase {
 			score();
 			WorldManager.blocking=0;
 			WorldManager.cactusHit=0;
+			WorldManager.bugHit=0;
 		}else if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_W) && !moving && !facing.equals("UP")){
 			if(facing.equals("DOWN")) {
 				if(this.getX() % 64 >= 64 / 2 ) {
@@ -295,6 +296,10 @@ public class Player extends EntityBase {
 		if (WorldManager.cactusHit == 1 && moving) {
 			counter-=6;
 			frogCounter-=6;
+		}
+		if (WorldManager.bugHit == 1 && moving) {
+			counter+=2;
+			frogCounter+=2;
 		}
 		if (facing.equals("UP") && moving && WorldManager.blocking == 0 && counter == frogCounter  ) {
 			counter+=1;
